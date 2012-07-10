@@ -35,7 +35,7 @@ directory install_location do
 end
 
 execute "tar -C #{install_location} --strip-components=1 -xzf #{Chef::Config[:file_cache_path]}/go-#{version}.tar.gz" do
-  not_if { ::File.exists?(install_location) }
+  not_if { ::File.exists?("#{install_location}/VERSION") }
 end
 
 link "/usr/local/go" do
