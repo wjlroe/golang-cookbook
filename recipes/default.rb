@@ -19,7 +19,7 @@
 #
 
 install_location = "/srv/golang/versions/#{node[:golang][:version]}"
-arch = kernel['machine'] =~ /x86_64/ ? "amd64" : "386"
+arch = node["kernel"]["machine"] =~ /x86_64/ ? "amd64" : "386"
 version = node[:golang][:version]
 
 remote_file "#{Chef::Config[:file_cache_path]}/go-#{version}.tar.gz" do
