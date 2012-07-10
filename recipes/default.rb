@@ -29,6 +29,11 @@ remote_file "#{Chef::Config[:file_cache_path]}/go-#{version}.tar.gz" do
   not_if { ::File.exists?("#{Chef::Config[:file_cache_path]}/go-#{version}.tar.gz") }
 end
 
+directory install_location do
+  recursive true
+  action :create
+end
+
 execute "tar -C #{install_location} --strip-components=1 -xzf #{Chef::Config[:file_cache_path]}/go-#{version}.tar.gz" do
   not_if { ::File.exists?(install_location) }
 end
