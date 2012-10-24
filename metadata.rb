@@ -9,4 +9,4 @@ version           "0.0.2"
   supports os
 end
 
-%w{ apt }.each do {|d| depends d}
+%w{ apt }.each {|d| depends d}
