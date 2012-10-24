@@ -26,6 +26,7 @@ if node['platform'] == 'ubuntu'
       components ["main"]
       keyserver "keyserver.ubuntu.com"
       key "9AD198E9"
+      notifies :run, resources(:execute => "apt-get update"), :immediately
     end
 
     package "golang" do
