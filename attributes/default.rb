@@ -17,6 +17,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['golang']['version'] = '1.0.2'
-
-default['golang']['1.0.2']['amd64']['checksum'] = '7349cddc54aeec427b00e5f353592f5a72c8421a'
+default['golang']['release'] = 'stable'

@@ -18,30 +18,24 @@
 # limitations under the License.
 #
 
-install_location = "/srv/golang/versions/#{node[:golang][:version]}"
-arch = node["kernel"]["machine"] =~ /x86_64/ ? "amd64" : "386"
-version = node[:golang][:version]
+if node['platform'] == 'ubuntu'
+  if node['lsb']['release'].to_f <= 12.04
+    apt_repository "gophers-ppa" do
+      uri "http://ppa.launchpad.net/gophers/go/ubuntu"
+      distribution node['lsb']['codename']
+      components ["main"]
+      keyserver "keyserver.ubuntu.com"
+      key "9AD198E9"
+    end
 
-remote_file "#{Chef::Config[:file_cache_path]}/go-#{version}.tar.gz" do
-  source "http://go.googlecode.com/files/go#{version}.linux-#{arch}.tar.gz"
-  mode "0644"
-  checksum node[:golang][version][arch][:checksum]
-  not_if { ::File.exists?("#{Chef::Config[:file_cache_path]}/go-#{version}.tar.gz") }
-end
-
-directory install_location do
-  recursive true
-  action :create
-end
-
-execute "tar -C #{install_location} --strip-components=1 -xzf #{Chef::Config[:file_cache_path]}/go-#{version}.tar.gz" do
-  not_if { ::File.exists?("#{install_location}/VERSION") }
-end
-
-link "/usr/local/go" do
-  action :delete
-end
-
-link "/usr/local/go" do
-  to install_location
+    package "golang" do
+      package_name "golang-#{node['golang']['release']}"
+      action :install
+    end
+  else
+    # Ubuntu Quantal+ is up-to-date with golang-stable
+    # and the weekly/tip packages in the PPA are only
+    # available for Precise and older Ubuntu releases
+    package "golang"
+  end
 end
